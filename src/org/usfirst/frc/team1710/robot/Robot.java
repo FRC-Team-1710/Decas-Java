@@ -18,20 +18,30 @@ public class Robot extends IterativeRobot {
     final String defaultAuto = "Default";
     final String customAuto = "My Auto";
     
-    public static Victor liftMotor;
+    public static Victor liftMotor, intakeRight, intakeLeft;
     
     String autoSelected;
     SendableChooser chooser;
     
     RobotDrive myRobot;
-    Joystick driveStick;
+    Joystick driveStick, mechStick;
     Button liftUpButton, liftDownButton;
 	
+    //runs as soon as you press "enable"
     public void robotInit() {
+    	//opening a new 4 motor drive
         myRobot = new RobotDrive(1,0,3,2);
+        
+        //defines the usb ports for each controller
         driveStick = new Joystick(0);
+        mechStick = new Joystick(1);
+        
+        //defines pwms for motors seperate from drive
         liftMotor = new Victor(4);
-
+        intakeRight = new Victor(5);
+        intakeLeft = new Victor(6);
+        
+        //inverts motors
         myRobot.setInvertedMotor(MotorType.kFrontLeft, true);
         myRobot.setInvertedMotor(MotorType.kRearLeft, true);
     }
@@ -53,12 +63,21 @@ public class Robot extends IterativeRobot {
 
     //looped
     public void teleopPeriodic() {
-    	double liftUpVal, liftDownVal;
-    	liftUpVal = driveStick.getRawAxis(3);
-    	liftDownVal = driveStick.getRawAxis(2);
-    	//getRawAxis takes axis number according to to sheet
+    	double liftVal, intakeInVal, intakeOutVal;
+    	
+    	//left joystick
+    	liftVal = mechStick.getRawAxis(4);
+    	//left trigger
+    	intakeInVal = mechStick.getRawAxis(3);
+    	//right trigger
+    	intakeOutVal = mechStick.getRawAxis(2);
+    	
+    	//getRawAxis takes axis number according to sheet
         myRobot.arcadeDrive(driveStick.getRawAxis(4)*-1, driveStick.getRawAxis(1)*-1);
-        Mech.Lift(liftUpVal -= liftDownVal);
+        //runs the method "lift" in the mech class
+        Mech.Lift(liftVal);
+        //runs the method "intake" in the mech class
+        Mech.Intake(intakeInVal -= intakeOutVal);
     }
     
     public void testPeriodic() {
