@@ -1,14 +1,18 @@
 package org.usfirst.frc.team1710.robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
 public class DriveStraight extends Command {
-
-    public DriveStraight() {
+	
+	double botSpeed, driveTime;
+    public DriveStraight(double time, double speed) {
     	requires(new Drive());
+    	driveTime = time;
+    	botSpeed = speed;
     }
 
     // Called just before this Command runs the first time
@@ -17,6 +21,10 @@ public class DriveStraight extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	for(int i = 0; i < 4; i++) {
+    		Robot.myRobot.arcadeDrive(botSpeed, driveTime);
+    		Timer.delay(driveTime/4);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

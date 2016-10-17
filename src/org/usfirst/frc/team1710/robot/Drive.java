@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1710.robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -15,7 +16,11 @@ public class Drive extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public static void moveStraight() {
+    public static void driveTwoSecs() {
+    	for(int i = 0; i < 4; i++) {
+    		Robot.myRobot.arcadeDrive(0.69, 0);
+    		Timer.delay(0.5);
+    	}
     }
 }
 
