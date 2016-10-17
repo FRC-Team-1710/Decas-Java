@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -23,9 +25,10 @@ public class Robot extends IterativeRobot {
     String autoSelected;
     SendableChooser chooser;
     
-    RobotDrive myRobot;
+    static RobotDrive myRobot;
     Joystick driveStick, mechStick;
     Button liftUpButton, liftDownButton;
+    Command autonomousCommand;
 	
     //runs as soon as you press "enable"
     public void robotInit() {
@@ -44,24 +47,21 @@ public class Robot extends IterativeRobot {
         //inverts motors
         myRobot.setInvertedMotor(MotorType.kFrontLeft, true);
         myRobot.setInvertedMotor(MotorType.kRearLeft, true);
+        
+		autonomousCommand = new AutoCommands();
     }
     
+    //runs once
     public void autonomousInit() {
-    	autoSelected = (String) chooser.getSelected();
-		System.out.println("Auto selected: " + autoSelected);
+        if (autonomousCommand != null) autonomousCommand.start();
     }
-
+    
+    //runs every ~20ms
     public void autonomousPeriodic() {
-    	switch(autoSelected) {
-    	case customAuto:
-            break;
-    	case defaultAuto:
-    	default:
-            break;
-    	}
+        Scheduler.getInstance().run();
     }
 
-    //looped
+    //runs every ~20ms
     public void teleopPeriodic() {
     	double liftVal, intakeInVal, intakeOutVal;
     	
@@ -74,10 +74,10 @@ public class Robot extends IterativeRobot {
     	
     	//getRawAxis takes axis number according to sheet
         myRobot.arcadeDrive(driveStick.getRawAxis(4)*-1, driveStick.getRawAxis(1)*-1);
-        //runs the method "lift" in the mech class
-        Mech.Lift(liftVal);
-        //runs the method "intake" in the mech class
-        Mech.Intake(intakeInVal -= intakeOutVal);
+        //runs the lift subsystem
+        Lift.run(liftVal);
+        //runs the intake subsystem
+        Intake.run(intakeInVal -= intakeOutVal);
     }
     
     public void testPeriodic() {
