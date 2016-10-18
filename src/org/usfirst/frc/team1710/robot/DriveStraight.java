@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveStraight extends Command {
 	
 	double botSpeed, driveTime;
-    public DriveStraight(double time, double speed) {
+	double currentTime;
+	boolean done;
+    public DriveStraight(double speed, double time) {
     	requires(new Drive());
     	driveTime = time;
     	botSpeed = speed;
@@ -21,14 +23,16 @@ public class DriveStraight extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	for(int i = 0; i < 4; i++) {
-    		Robot.myRobot.arcadeDrive(botSpeed, driveTime);
-    		Timer.delay(driveTime/4);
-    	}
+    	Robot.myRobot.arcadeDrive(botSpeed, 0);
+    	Timer.delay(driveTime);
+    	done = true;
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+    	if (done) {
+    		return true;
+    	}
         return false;
     }
 
