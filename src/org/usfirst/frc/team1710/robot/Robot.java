@@ -66,7 +66,7 @@ public class Robot extends IterativeRobot {
     	double liftVal, intakeInVal, intakeOutVal;
     	
     	//left joystick
-    	liftVal = mechStick.getRawAxis(4);
+    	liftVal = mechStick.getRawAxis(5);
     	//left trigger
     	intakeInVal = mechStick.getRawAxis(3);
     	//right trigger

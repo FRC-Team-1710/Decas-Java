@@ -25,7 +25,6 @@ public class TurnForTime extends Command {
         	//for some reason the arcade drive params are backwards. so moveVal is rotation and vice versa.
     		Robot.myRobot.arcadeDrive(botSpeed, 0);
     		count++;
-    		System.out.println("hey");
     	} else {
     		done = true;
     		count = 0;
