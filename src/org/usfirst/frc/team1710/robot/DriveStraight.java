@@ -25,11 +25,15 @@ public class DriveStraight extends Command {
     // Called repeatedly when this Command is scheduled to run
     // Runs every 20ms
     protected void execute() {
-    	if(count < (((driveTime*1000))*20)) {
-    		Robot.myRobot.arcadeDrive(botSpeed, 0);
+    	//driveTime is in seconds so this converts it to milliseconds, the divides it by 20 bc execute loops every 20ms
+    	//every time it loops the count variable increases
+    	if(count < (driveTime*1000)/20) {
+        	//for some reason the arcade drive params are backwards. so moveVal is rotation and vice versa.
+    		Robot.myRobot.arcadeDrive(0, botSpeed);
     		count++;
     	} else {
     		done = true;
+    		count = 0;
     	}
     }
 

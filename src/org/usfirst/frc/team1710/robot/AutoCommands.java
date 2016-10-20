@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoCommands extends CommandGroup {
     
     public  AutoCommands() {
-    	addSequential(new DriveStraight(1, 2));
+    	//DriveStraight(speed, time (in seconds))
+    	addSequential(new DriveStraight(0.5, 5));
     }
 }
